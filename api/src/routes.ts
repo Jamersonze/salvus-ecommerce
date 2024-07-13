@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
-import { createProduct, Product, readProducts, updateProduct } from "./db";
-import { PrismaClientValidationError } from "@prisma/client/runtime/library";
-import { NullNameCreateProductError } from "./errors";
+import { createProduct, deleteProduct, Product, readProducts, updateProduct } from "./db";
+import { NullNameCreateProductError, NullProductIdError, ProductNotFoundError } from "./errors";
 
 const router = Router();
 
@@ -11,8 +10,8 @@ router.get('/products', (req: Request, res: Response) => {
 
   readProducts(filterObj).then((products: Product[]) => {
     res.status(200).send(products);
-  }).catch((error : Error) => {
-    res.status(500).send('Internal Server Error');
+  }).catch((error : ProductNotFoundError) => {
+    res.status(404).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
     console.log(error);
   });
 });
@@ -40,9 +39,23 @@ router.put('/products/:id', (req: Request, res: Response) => {
   const updateData = req.body;
   updateProduct(id, updateData).then(() => {
     res.status(200).send('Product updated successfully');
-  }).catch((error : Error) => {
-    res.status(500).send('Internal Server Error');
+  }).catch((error : NullProductIdError) => {
+    res.status(400).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
     console.log(error);
   });
 })
+
+router.delete('/products/:id', (req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  deleteProduct(id).then(() => {
+    res.status(200).send('Product deleted successfully');
+  }).catch((error : NullProductIdError) => {
+    res.status(400).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    console.log(error);
+  }).catch((error : ProductNotFoundError) => {
+    res.status(404).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    console.log(error);
+  });
+})
+
 export default router;

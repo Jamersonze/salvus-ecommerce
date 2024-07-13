@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaClientValidationError } from '@prisma/client/runtime/library';
-import { NullNameCreateProductError } from './errors';
+import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime/library';
+import { NullNameCreateProductError, NullProductIdError, NullProductObjectError, ProductNotFoundError } from './errors';
 
 const prisma = new PrismaClient();
 
@@ -30,22 +30,23 @@ export async function createProduct(productObj: Product) {
             if (!productObj.name) {
                 throw new NullNameCreateProductError();
             }
+        }else{
+            throw error;
         }
     }
 }
 
 // Example of reading Products
-export function readProducts(filterObj: any) {
-    return prisma.produto.findMany(
-        filterObj
-    );
+export async function readProducts(filterObj: any) {
+    
+    return await prisma.produto.findMany(filterObj);
 }
 
 // Example of updating a Product
 export async function updateProduct(id: Product["id"], updateData: Product) {
     try {
-        if (!updateData) {
-            throw new Error('Argument \'updateData\' is required');
+        if (!Object.keys(updateData).length) {
+            throw new NullProductObjectError();
         }
         const updatedProduct = await prisma.produto.update({
             where: { id },
@@ -55,16 +56,34 @@ export async function updateProduct(id: Product["id"], updateData: Product) {
     } catch (error) {
         if(error instanceof PrismaClientValidationError) {
             if (!id) {
-                
+                throw new NullProductIdError();
             }
+        }else if (error instanceof NullProductObjectError){
+            throw new NullProductObjectError();
+        }else{
+            throw error;
         }
     }
 }
 
 // Example of deleting a Product
 export async function deleteProduct(id: Product["id"]) {
-    const deletedProduct = await prisma.produto.delete({
-        where: { id },
-    });
-    console.log('Deleted Product:', deletedProduct);
+    try{
+        const deletedProduct = await prisma.produto.delete({
+            where: { id },
+        });
+        console.log('Deleted Product:', deletedProduct);
+    }catch(error) {
+        if(error instanceof PrismaClientValidationError) {
+            if (!id) {
+                throw new NullProductIdError();
+            }
+        }else if(error instanceof PrismaClientKnownRequestError) {
+            if (error.code === 'P2025') {
+                throw new ProductNotFoundError();
+            }
+        }else{
+            throw error;
+        }
+    }
 }
