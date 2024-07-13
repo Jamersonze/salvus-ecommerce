@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
-import { createProduct, Product, readProducts } from "./db";
+import { createProduct, Product, readProducts, updateProduct } from "./db";
 import { PrismaClientValidationError } from "@prisma/client/runtime/library";
+import { NullNameCreateProductError } from "./errors";
 
 const router = Router();
 
@@ -27,10 +28,21 @@ router.post('/products', (req: Request, res: Response) => {
 
   createProduct(productObj).then(() => {
     res.status(201).send('Product created successfully');
-  }).catch((error : PrismaClientValidationError) => {
+  }).catch((error : NullNameCreateProductError) => {
     res.status(400).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
     console.log(error);
   });
 })
 
+// Example of updating a Product
+router.put('/products/:id', (req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  const updateData = req.body;
+  updateProduct(id, updateData).then(() => {
+    res.status(200).send('Product updated successfully');
+  }).catch((error : Error) => {
+    res.status(500).send('Internal Server Error');
+    console.log(error);
+  });
+})
 export default router;

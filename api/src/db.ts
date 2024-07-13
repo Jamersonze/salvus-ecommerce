@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime/library';
+import { PrismaClientValidationError } from '@prisma/client/runtime/library';
+import { NullNameCreateProductError } from './errors';
 
 const prisma = new PrismaClient();
 
@@ -27,8 +28,7 @@ export async function createProduct(productObj: Product) {
     }catch (error) {
         if (error instanceof PrismaClientValidationError) {
             if (!productObj.name) {
-                error.message = 'Argument \'name\' is required';
-                throw error;
+                throw new NullNameCreateProductError();
             }
         }
     }
@@ -43,11 +43,22 @@ export function readProducts(filterObj: any) {
 
 // Example of updating a Product
 export async function updateProduct(id: Product["id"], updateData: Product) {
-    const updatedProduct = await prisma.produto.update({
-        where: { id },
-        data: updateData,
-    });
-    console.log('Updated Product:', updatedProduct);
+    try {
+        if (!updateData) {
+            throw new Error('Argument \'updateData\' is required');
+        }
+        const updatedProduct = await prisma.produto.update({
+            where: { id },
+            data: updateData
+        });
+        console.log('Updated Product:', updatedProduct);
+    } catch (error) {
+        if(error instanceof PrismaClientValidationError) {
+            if (!id) {
+                
+            }
+        }
+    }
 }
 
 // Example of deleting a Product
