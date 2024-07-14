@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "start": "ts-node src/app.ts",
     "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts"
   },
   "keywords": [],
