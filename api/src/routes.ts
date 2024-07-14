@@ -18,12 +18,7 @@ router.get('/products', (req: Request, res: Response) => {
 
 router.post('/products', (req: Request, res: Response) => {
 
-  const { name, description, price } = req.body;
-  const productObj = {
-    name,
-    description,
-    price
-  } as Product;
+  const productObj: Product = req.body;
 
   createProduct(productObj).then(() => {
     res.status(201).send('Product created successfully');
@@ -39,7 +34,7 @@ router.put('/products/:id', (req: Request, res: Response) => {
   const updateData = req.body;
   updateProduct(id, updateData).then(() => {
     res.status(200).send('Product updated successfully');
-  }).catch((error : NullProductIdError) => {
+  }).catch((error) => {
     res.status(400).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
     console.log(error);
   });
@@ -49,13 +44,10 @@ router.delete('/products/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   deleteProduct(id).then(() => {
     res.status(200).send('Product deleted successfully');
-  }).catch((error : NullProductIdError) => {
+  }).catch((error) => {
     res.status(400).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
     console.log(error);
-  }).catch((error : ProductNotFoundError) => {
-    res.status(404).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-    console.log(error);
-  });
+  })
 })
 
 export default router;

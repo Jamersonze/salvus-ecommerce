@@ -12,10 +12,10 @@ export type Product = {
     created_at: Date | null;
 };
 
-export type updateProduct = {
-    name: string | null;
-    description: string | null;
-    price: number | null;
+export type updateProductObj = {
+    name?: string;
+    description?: string;
+    price?: number;
 };
 
 // Example of creating a new record
@@ -37,29 +37,29 @@ export async function createProduct(productObj: Product) {
 }
 
 // Example of reading Products
-export async function readProducts(filterObj: any) {
+export async function readProducts(filterObj = {}): Promise<Product[]> {
     
-    return await prisma.produto.findMany(filterObj);
+    return await prisma.produto.findMany({where: filterObj});
 }
 
 // Example of updating a Product
-export async function updateProduct(id: Product["id"], updateData: Product) {
+export async function updateProduct(id: Product["id"], updateData: updateProductObj) {
     try {
         if (!Object.keys(updateData).length) {
             throw new NullProductObjectError();
         }
         const updatedProduct = await prisma.produto.update({
             where: { id },
-            data: updateData
+            data: updateData as Product
         });
         console.log('Updated Product:', updatedProduct);
     } catch (error) {
         if(error instanceof PrismaClientValidationError) {
             if (!id) {
                 throw new NullProductIdError();
+            }else{
+                throw error
             }
-        }else if (error instanceof NullProductObjectError){
-            throw new NullProductObjectError();
         }else{
             throw error;
         }
