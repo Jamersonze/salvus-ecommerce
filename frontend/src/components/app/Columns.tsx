@@ -69,6 +69,16 @@ export const columns: ColumnDef<Product>[] = [
         }
     },
     {
+        accessorKey: "created_at",
+        header: "Data da criação",
+        cell: ({ row }) => {
+
+            const date = new Date(row.getValue("created_at"))
+
+            return <div>{date.toLocaleDateString()}</div>
+        }
+    },
+    {
         id: "actions",
         cell: ({ row }) => {
         const product = row.original
