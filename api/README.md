@@ -29,6 +29,24 @@ A estrutura do projeto é testada utilizando o framework de testes Jest para gar
 1. Execute a aplicação usando `npm start`.
 2. Acesse a aplicação em `http://localhost:3000`.
 
+## Endpoints
+- GET:  `http://localhost:3000/products`
+- POST: `http://localhost:3000/products`
+    body: {
+        name: string,
+        description: string,
+        price: number,
+    }
+    o Id e a data da criação são geradas automáticamente
+-  PUT: `http://localhost:3000/products/:id`
+    body: {
+        name: string,
+        description: string,
+        price: number,
+    }
+    precisa apenas definir um dos três atributos para atualizar
+-   DELETE: `http://localhost:3000/products/:id`
+
 ## Testes
 Para rodar os testes, utilize o comando `npm test`. Certifique-se de que o banco de dados está funcionando antes de testar.
 
