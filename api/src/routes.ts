@@ -21,7 +21,7 @@ router.post('/products', (req: Request, res: Response) => {
   const productObj: Product = req.body;
 
   createProduct(productObj).then(() => {
-    res.status(201).send('Product created successfully');
+    res.status(201).send({ success: 'Product created successfully' });
   }).catch((error : NullNameCreateProductError) => {
     res.status(400).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
     console.log(error);
@@ -33,7 +33,7 @@ router.put('/products/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const updateData = req.body;
   updateProduct(id, updateData).then(() => {
-    res.status(200).send('Product updated successfully');
+    res.status(200).send({ success: 'Product updated successfully' });
   }).catch((error) => {
     res.status(400).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
     console.log(error);
@@ -43,7 +43,7 @@ router.put('/products/:id', (req: Request, res: Response) => {
 router.delete('/products/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   deleteProduct(id).then(() => {
-    res.status(200).send('Product deleted successfully');
+    res.status(200).send({ success: 'Product deleted successfully' });
   }).catch((error) => {
     res.status(400).send(JSON.stringify(error, Object.getOwnPropertyNames(error)));
     console.log(error);

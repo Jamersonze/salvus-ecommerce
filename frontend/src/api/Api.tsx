@@ -1,6 +1,6 @@
-import { Product } from "@/components/app/Columns"
+import { ProductOnForm } from "@/components/app/Columns"
 
-const API_URL = import.meta.env.API_HOST || "http://localhost:3000"
+const API_URL = import.meta.env.VITE_API_HOST || "http://localhost:3000"
 
 export const getProducts = async () => {
     const response = await fetch(`${API_URL}/products`, {
@@ -18,7 +18,7 @@ export const deleteProduct = async (id: number) => {
     return data
 }
 
-export const createProduct = async (product: Product) => {
+export const createProduct = async (product: ProductOnForm) => {
     const response = await fetch(`${API_URL}/products`, {
         method: "POST",
         headers: {
@@ -30,7 +30,7 @@ export const createProduct = async (product: Product) => {
     return data
 }
 
-export const updateProduct = async (id: number, product: Product) => {
+export const updateProduct = async (id: number, product: ProductOnForm) => {
     const response = await fetch(`${API_URL}/products/${id}`, {
         method: "PUT",
         headers: {
