@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "ts-node src/app.ts",
-    "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts"
+    "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts",
+    "vercel-build": "npx prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
