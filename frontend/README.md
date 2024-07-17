@@ -28,3 +28,32 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+# Salvus frontend
+
+## Descrição
+Este projeto é um frontend que consome a API construida em resposta ao teste técnico da Salvus. A aplicação permite que os usuários pesquisem por produtos, visualizem detalhes do produto, adicionem registros de produtos e os apaguem.
+
+## Antes de instalar
+Defina a variável `VITE_API_HOST` criando um arquivo `.env` com o endereço do backend.
+Por padrão seu valor é `http://localhost:3000`
+
+## Instalação
+1. Clone este repositório.
+2. Execute `npm install` para instalar as dependências.
+
+## Como Rodar
+Execute `npm start` para iniciar a aplicação.
+
+## Tecnologias Utilizadas
+- Vite
+- React
+- Typescript
+- TailwindCss
+- Shadcn UI
+
+## Contribuição
+Qualquer contribuição é bem-vinda! Abra uma issue ou envie um pull request.
+
+## Licença
+Este projeto está sob a licença GNU v3. Veja o arquivo LICENSE para mais detalhes.
