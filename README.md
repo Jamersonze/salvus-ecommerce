@@ -1,4 +1,4 @@
-# Nome da Aplicação
+# salvus-ecommerce
 
 Aplicação criada para o teste técnico da empresa Salvus
 
