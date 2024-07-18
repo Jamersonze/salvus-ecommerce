@@ -31,6 +31,15 @@ A estrutura do projeto é testada utilizando o framework de testes Jest para gar
 
 ## Endpoints
 - GET:  `http://localhost:3000/products`
+    response: [
+        {
+            id: number,
+            name: string,
+            description: string,
+            price: number,
+            created_at: Date
+        }
+    ]
 - POST: `http://localhost:3000/products`
     body: {
         name: string,
